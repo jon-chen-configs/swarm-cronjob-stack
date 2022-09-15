@@ -1,0 +1,16 @@
+# A job scheduler for Docker containers, configured via container labels.
+# https://github.com/crazy-max/swarm-cronjob
+# https://crazymax.dev/swarm-cronjob/
+services:
+  swarm-cronjob:
+    image: crazymax/swarm-cronjob:latest
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      - "TZ=${TZ}"
+      - "LOG_LEVEL=info"
+      - "LOG_JSON=false"
