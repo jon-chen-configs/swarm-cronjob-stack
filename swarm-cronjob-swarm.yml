@@ -14,3 +14,17 @@ services:
       - "TZ=${TZ}"
       - "LOG_LEVEL=info"
       - "LOG_JSON=false"
+
+  prune-nodes-job:
+    image: docker
+    command: ["docker", "system", "prune", "-f"]
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      mode: global
+      labels:
+        - swarm.cronjob.enable=true
+        - swarm.cronjob.schedule=@weekly
+        - swarm.cronjob.skip-running=false
+      restart_policy:
+        condition: none
