@@ -42,6 +42,18 @@ steps:
     when:
       event: [promote]
 
+  - name: wait for deploy
+    image: sudobmitch/docker-stack-wait:latest
+    environment:
+      STACK_NAME: swarm-cronjob-swarm
+    volumes:
+      - name: docker.sock
+        path: /var/run/docker.sock
+    commands:
+      - /docker-stack-wait.sh $STACK_NAME
+    when:
+      event: [promote]
+
 volumes:
   - name: docker.sock
     host:
